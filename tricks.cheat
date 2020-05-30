@@ -1,0 +1,63 @@
+% tip, trick
+
+# split $PATH into multi-lines
+echo -e "$PATH//:/\\n"
+echo $PATH | tr ':' '\n'
+
+# transform whole variable to upper-casing
+echo ${<var>^^}
+
+# transform partial of variable to upper-casing
+echo ${<var>^^[<set>]}
+$ var: printenv | cut -d '=' -f 1 | less
+
+# extract urls from specified file
+cat <filename> | grep http | grep -shoP 'http.*?[" >]' > urls-$(date +%F-%T).txt
+$ filename: fdfind -tf . .
+
+# extract urls from specified directory
+find <folder> -exec cat {} \;  | grep http | grep -shoP 'http.*?[" >]' > urls-$(date +%F-%T).txt
+$ folder: fdfind -td . .
+
+# list process with cpu or mem sorted
+; https://www.tecmint.com/find-linux-processes-memory-ram-cpu-usage/
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%<sort> | head
+
+$ sort: echo -e "mem\ncpu"
+
+# fetch summary of system
+inix -SMA
+
+# fetch more detailed summary of system
+inix -Fxz
+
+# get screen resolution (1)
+xdpyinfo  | grep -oP 'dimensions:\s+\K\S+'
+
+# get screen resolution (2)
+xdpyinfo | awk '/dimensions/{print $2}'
+
+# get screen resolution (3)
+xdpyinfo | grep dimensions
+
+# play audio from video files with mpv
+; https://ivan.sanchezortega.es:444/devel/2017/09/20/efficient-audio-only-mpv.html
+mpv --no-video <video>
+
+# play audio from video files with ffmpeg & mpv
+ffmpeg -i <video> -vn -acodec copy -f opus - | mpv -
+
+# add user to docker group for permissions
+sudo usermod -aG docker <username>
+$ username: getent passwd | cut -d ':' -f 1
+
+# find out which sub-directories consume how much disk size
+du -h --max-depth=1 | sort -hr
+
+# report folder size
+du -sh <folders>
+
+# get listening port of system
+lsof -i -P -n | grep LISTEN
+netstat -tulpn | grep LISTEN
+nmap -sTU -O <ip>

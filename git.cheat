@@ -1,0 +1,31 @@
+% git
+
+# check branch not merged to master
+git branch --no-merged master
+
+# list recently modified branch
+git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'%
+
+# use vim to edit commit message
+git config --global core.editor "vim"
+
+# discard un-committed modifications and recover to previous clean state
+git reset --hard
+
+# undo last `git commit`
+git reset HEAD~
+
+# discard modifications to a file before committing
+git reset HEAD $1 && git checkout $1
+
+# check difference after `git add`
+git dff --cached
+
+# checkout to last branch
+git checkout -
+
+# search branch list including specified commitment
+git branch --contains <commit hash>
+
+# find tag list including specified commitment
+git tag --contains <commit hash>
