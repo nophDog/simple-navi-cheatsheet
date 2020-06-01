@@ -29,3 +29,500 @@ git branch --contains <commit hash>
 
 # find tag list including specified commitment
 git tag --contains <commit hash>
+
+; -----------------------------------------
+; https://github.com/xjh22222228/git-manual
+
+; CONFIGURATION
+# check global configuration
+git config -l
+
+# check local configuration
+git config --local --list
+
+# get global user
+git config --global --get user.name
+
+# get global email
+git config --global --get user.email
+
+# set global user
+git config --global user.name "<user>"
+
+# set global email
+git config --global user.email "<email>"
+
+# set local repo user
+git config --local user.name "<user>"
+
+# set local repo email
+git config --local user.email "<email>"
+
+# delete global configuration
+git config --unset --global user.name
+git config --unset --global user.email
+
+# set default editor
+git config --global core.editor <editor>
+
+# set default diff tool
+git config --global merge.tool <differ>
+
+# edit current repo configuration
+git config -e
+vi .git/config
+
+; ALIAS
+# git st <==> git status
+git config --global alias.<alias> <command>
+
+# if added previously, --replace-all is needed to overwrite
+git config --global alias.st status --replace-all
+
+# add `!` at the beginning to execute external commands
+git config --global alias.st '!echo hello'
+
+# use external commands to merge codes
+git config --global alias.mg '!git checkout develop && git pull && git merge master && git checkout -'
+
+# delete an alias
+git config --global --unset alias.<alias>
+
+; PROXY
+# setting proxy
+git config --global https.proxy  <proxy>
+git config --global http.proxy  <proxy>
+
+# get proxy settings
+git config --global --get http.proxy
+git config --global --get https.proxy
+
+# unset proxy settings
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+; SSH KEY
+# generate ssh key
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+; FILE STATUS
+# check file status
+git status
+
+# check file status (in short format)
+git status -s
+
+# ignore submodules
+git status --ignore-submodules
+
+# display ignored files
+git status --ignored
+
+; LOG
+# chekc complete commit history
+git log
+
+# check previous N commit messages
+git log -<N>
+
+# check previous N commit messages (including diff)
+git log -p -2
+
+# search keywords
+git log -S <keywords>
+
+# display merged logs only
+git log --merges
+
+# display log in graphical format (--oneline optional)
+git log --graph --oneline
+
+# list commit contribution (author and contribution only)
+git shortlog -sn
+
+# display messages sorted by contribution
+git shortlog -n
+
+# check contribution in email format
+git shortlog -e
+
+; BLAME
+# check modifications (including time, author and content) of a file
+git blame <file>
+
+# check who change the n-Nth lines of a file
+git blame -L n,N <file>
+
+# check who change a file after the nth line
+git blame -L n <file>
+
+# display complete hash of a file
+git blame -l <file>
+
+# display modified lines
+git blame -n <file>
+
+# display the author of a file
+git blame -e <file>
+
+# combine parameters for a compound query of a file
+git blame -enl -L 11 <file>
+
+; BRANCH
+# check all branch
+git branch -a
+
+# check local branch
+git branch
+
+# check remote branch
+git branch -r
+
+# check remote branch associated with local branch
+git branch -vv
+
+# check creation time of local master branch
+git reflog show --date=iso master
+
+# switch to master branch ₁
+git checkout master
+
+# switch to master branch ²
+git switch master
+
+# switch to last branch
+git checkout -
+
+# switch to remote branch
+git checkout -t origin/<branch>
+
+# create a local branch
+git branch <branch>
+
+# create a local branch and switch
+git checkout -b <branch>
+
+# create a remote branch (actually create a local one and then push)
+git checkout -b <branch> && git push origin <branch>
+
+# create an empty branch, don't inherit from parent branch, at least require 4 steps
+git checkout --orphan <branch>
+
+# create an empty branch
+git rm -rf .
+
+; 添加并提交，否则分支是隐藏的 （执行这一步之前需要注意当前工作区必须保留一个文件，否则无法提交）
+# add & commit, or the branch would be hidden (ATTENTION: before this step, the workspace has at least one file, or the commit would fail)
+git add -A && git commit -m "<commit_message>"
+
+# push to remote branch
+git push --set-upstream origin <branch>
+
+# delete a local branch
+git branch -d <branch>
+
+# delete a remote branch
+git push origin :<branch>
+
+# delete a remote branch (git version >= 1.7.0)
+git push origin --delete <branch>
+
+# rename current branch (normally 3 steps required)
+; 1、修改分支名称
+; 2、删除远程旧分支
+; 3、将重命名分支推送到远程
+git branch -m <branch_new> && git push origin :<branch_old> && git push -u origin <branch_new>
+
+# rename specified branch
+git branch -m old_branch new_branch
+
+# two steps: merge feature/v1.0.0 sub_branch to branch
+git checkout <branch> && git merge <sub_branch>
+
+# 或者一步法, 将 feature/v1.0.0 分支的内容合并到 develop
+git merge feature/v1.0.0 develop
+
+# merge branch to current one in quiet mode
+git merge <branch> -q
+
+# merge without editing, skipping interact
+git merge <branch> --no-edit
+
+# do not commit after merging branch
+git merge <branch> --no-commit
+
+# 退出合并，恢复到合并之前的状态
+# exit merging and restore to previous state of merging
+git merge --abort
+
+; STASH
+# stash all
+git add -A
+
+# stash specified file
+git add <file>
+
+# stash all modified files of current directory
+git add .
+
+# stash some files
+git add 1.txt 2.txt ...
+
+; DELETE
+# delete a file
+git rm <file>
+
+# delete all file (not including `.git`)
+git rm -rf .
+
+# clear current workspace cache but not deleting files (usually use to fix file name not into effect)
+git rm -r --cached .
+
+; COMMIT
+# `-m` message
+git commit -m "<message>"
+
+# commit for specified files
+git commit <file> -m "<message>"
+
+# commit and display diff content
+git commit -v
+
+# git commit with empty message
+git commit --allow-empty-message
+
+# rewrite last commit message (make sure current workspace no modification)
+git commit --amend -m "<message>"
+
+; PUSH
+# push to master branch
+git push -u origin master
+
+# push local branch to remote branch
+git push origin <branchName>:<branchName>
+
+# push (current) branch
+git push
+
+# force to push
+git push -f
+
+; FETCH
+# (recommended) won't auto-merge
+git fetch origin master
+
+# = `git fetch` and then `git merge`
+git pull
+
+# pull lastest branch
+git pull origin master:master
+
+# (same with above but omit local branch name)
+git pull origin master
+
+; DIFF
+# check all files
+git diff
+
+# check specified file
+git diff <file>
+
+# check specified version with commitId (can be fetch with `git log`)
+git diff d68a1ef2407283516e8e4cb675b434505e39dc54
+
+# check specified file modifications
+git log <file>
+git show <commitid> <file>
+
+; RESET
+# reset to lastest version
+git reset --hard HEAD^
+
+# reset to last two versions
+git reset --hard HEAD^^
+
+# reset to specified version with commitId
+git reset --hard '<commitid>'
+
+# (reset version is not preserved in `git log`) check it with
+git reflog
+
+; TAG
+# list all local tags
+git tag
+
+# lis all remote tags
+git ls-remote --tags origin
+
+# search tag with a template
+git tag -l "<template>"
+
+# create a tag with a note
+git tag -a <tag> -m "<note>"
+
+# create a tag without any parameters
+git tag <tag>
+
+# create a tag with a commitid
+git log
+git tag -a <tag> <commitid>
+
+# push to remote
+git push origin <tag>
+
+# push all at one time
+git push origin --tags
+
+# delete a tag (to delete remote tag, you need to `git push origin <tag>` again)
+git tag -d <tag>
+
+# delete a remote tag
+git push origin --delete <tag>
+
+# checkout a tag
+git checkout <tag>
+
+# show a local tag
+git show <tag>
+
+; REBASE
+# rebase lastest 4 commits
+git rebase -i HEAD~4
+
+# or rebase with commit id
+git rebase -i e88835de905ad396f61a0dc8c040a8ac8a34f3f8
+
+# abort rebase operation
+git rebase --abort
+
+# to continue after confliction fix
+git rebase --continue
+
+; GIT FLOW
+# initialize a repo
+git flow init
+
+# start a new feature
+git flow feature start <feature>
+
+# push to remote
+git flow feature publish <feature>
+
+# complete feature, merge and switch back
+git flow feature finish <feature>
+
+; HOTFIX
+; for master
+# start a new hotfix
+git flow hotfix start <hotfix>
+
+# push to remote
+git flow hotfix publish <hotfix>
+
+# finish new hotfix and switch back
+git flow hotfix finish <hotfix>
+
+; PUBLISH
+# start a new release
+git flow release start <publish>
+
+# push to remote
+git flow release publish <publish>
+
+# finish new publish and switch back
+git flow release finish <publish>
+
+; SUBMODULE
+# add a submodule
+git submodule add <submodule>
+
+# 2 ways to update
+# step ₁
+git submodule update --remote
+
+# step ²
+git pull
+
+# fix submodule to point to detached head
+git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
+
+# delete a submodule
+# usually 3 steps (deinit --> clear cache --> commit & push)
+git submodule deinit <submodule> && git rm --cached common && git commit -am "<message>" && git push
+
+; BISECT
+# start (`git log`)
+git bisect start <begin> <end>
+
+# bisect a commit as good
+git bisect good
+
+# bisect a commit as bad
+git bisect bad
+
+# exit
+git bisect reset
+
+; HELP
+# get detailed help doc
+git help
+
+# display all git commands as summary
+git help -a
+
+# display all configurable variable
+git help -c
+
+; COMMIT HISTORY
+# 1、start a new branch
+git checkout --orphan <branch_new>
+
+# 2、stash all files and commit
+git add -A && git commit -m "<message>"
+
+# 3、delete the local branch
+git branch -D <branch_local>
+
+# 4、rename new branch
+git branch -m <branch_rename>
+
+# 5、force pushing <branch_rename> to remote
+git push -f origin <branch_rename>
+
+; MISC
+# check git version
+git --version
+
+# check remote repo url
+git remote -v
+
+# remember global account and password
+git config --global credential.helper store
+
+# clear remembered credentials for Windows
+git credential-manager uninstall
+
+# clear remembered credentials for Mac OR Linux ¹
+git config --global credential.helper ""
+
+# clear remembered credentials for Mac OR Linux ²
+git config --global --unset credential.helper
+
+# clear local git cache
+git rm -r --cached .
+
+; TIPS
+# 1、global configuration
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+# 2、make log straight-forward
+git lg
+
+# alias configurations ¹
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h - %Cgreen[%an]%Creset -%C(yellow)%d%Creset %s %C(yellow)<%cr>%Creset' --abbrev-commit --date=relative"
+
+# alias configurations ²
+git config --global alias.his "log --graph --decorate --oneline --pretty=format:'%Creset %s %C(magenta)in %Cred%h %C(magenta)commited by %Cgreen%cn %C(magenta)on %C(yellow) %cd %C(magenta)from %Creset %C(yellow)%d' --abbrev-commit --date=format:'%Y-%m-%d %H:%M:%S'"
+
+# alias configurations ³
+git config --global alias.hist "log --graph --decorate --oneline --pretty=format:'%Cred%h - %C(bold white) %s %Creset %C(yellow)%d  %C(cyan) <%cd> %Creset %Cgreen(%cn)' --abbrev-commit --date=format:'%Y-%m-%d %H:%M:%S'"
