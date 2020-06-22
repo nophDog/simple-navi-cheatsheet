@@ -1,4 +1,4 @@
-# simple-navi-cheatsheet
+# Simple Navi Cheatsheet
 🚀 Simple cheat-sheets for Linux learning path
 
 ------
