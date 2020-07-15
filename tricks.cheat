@@ -61,3 +61,9 @@ du -sh <folders>
 lsof -i -P -n | grep LISTEN
 netstat -tulpn | grep LISTEN
 nmap -sTU -O <ip>
+
+# fetch opening port (UDP)
+netstat -nupl
+
+# fetch opening port (TCP)
+netstat -ntpl
